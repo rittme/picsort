@@ -43,6 +43,8 @@ jobs:
           TAG="${{ steps.tag.outputs.name }}"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" picsort.com --clobber
+            # If this was a draft, publish it.
+            gh release edit "$TAG" --draft=false || true
           else
             gh release create "$TAG" picsort.com \
               --title "$TAG" \
